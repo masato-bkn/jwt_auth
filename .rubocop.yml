@@ -1,4 +1,6 @@
 AllCops:
+  NewCops:
+    enable
   Exclude:
     - "db/**/*"
     - "tmp/**/*"
@@ -12,4 +14,8 @@ AllCops:
     - "node_modules/**/*"
 
 Style/Documentation:
+  Enabled: false
+Style/AsciiComments:
+  Enabled: false
+Metrics/BlockLength:
   Enabled: false
