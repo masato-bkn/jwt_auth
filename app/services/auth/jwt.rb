@@ -6,13 +6,16 @@ module Auth
   class Jwt
     # TODO: 秘密鍵, アルゴリズムは後で
     def self.issue_token(user_info:)
-      JWT.encode(user_info, nil, 'none')
+      JWT.encode(
+          user_info,
+          Rails.application.credentials.secret_key_base
+        )
     end
 
     def self.valid_user?(jwt:)
       return false if jwt.nil?
 
-      decoded_jwt = JWT.decode(jwt, nil, false)
+      decoded_jwt = JWT.decode(jwt, Rails.application.credentials.secret_key_base)
       user_exists?(decoded_jwt)
     end
 
