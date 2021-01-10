@@ -11,7 +11,7 @@ RSpec.describe UsersController, type: :request do
     let :params do
       {
         name: 'hoge',
-        password_digest: '123456',
+        password: '123456',
         enail: 'test@example.com'
       }
     end
