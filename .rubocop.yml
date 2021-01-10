@@ -1,0 +1,15 @@
+AllCops:
+  Exclude:
+    - "db/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+    - "lib/**/*"
+    - "bin/**/*"
+    - "config/**/*"
+    - "Gemfile"
+    - "Rakefile"
+    - "config.ru"
+    - "node_modules/**/*"
+
+Style/Documentation:
+  Enabled: false
