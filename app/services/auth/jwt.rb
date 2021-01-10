@@ -10,6 +10,8 @@ module Auth
     end
 
     def self.valid_user?(jwt:)
+      return false if jwt.nil?
+
       decoded_jwt = JWT.decode(jwt, nil, false)
       user_exists?(decoded_jwt)
     end
