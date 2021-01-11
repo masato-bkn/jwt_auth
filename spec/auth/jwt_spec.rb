@@ -24,13 +24,13 @@ RSpec.describe Auth::Jwt, type: :auth do
     end
 
     it 'jwtトークンが返ってくること' do
-      expect(subject).to eq(JWT.encode(user_info, nil, 'none'))
+      expect(subject).to eq(JWT.encode(user_info, Rails.application.credentials.secret_key_base))
     end
   end
 
-  describe 'issue_token' do
+  describe 'valid?' do
     subject do
-      Auth::Jwt.valid_user?(jwt: jwt)
+      Auth::Jwt.valid?(jwt: jwt)
     end
 
     let :user do
@@ -38,7 +38,7 @@ RSpec.describe Auth::Jwt, type: :auth do
     end
 
     let :jwt do
-      JWT.encode(user_info, nil, 'none')
+      JWT.encode(user_info, Rails.application.credentials.secret_key_base)
     end
 
     let :user_info do
@@ -51,6 +51,16 @@ RSpec.describe Auth::Jwt, type: :auth do
 
     it do
       expect(subject).to eq(true)
+    end
+
+    context 'jwtの有効期限が切れている場合' do
+      let :jwt do
+        Auth::Jwt.issue_token(user_info: user_info, expire_time: Time.zone.now)
+      end
+
+      it do
+        expect { subject }.to raise_error(JWT::ExpiredSignature)
+      end
     end
   end
 end

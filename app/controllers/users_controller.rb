@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    if Auth::Jwt.valid_user?(jwt: request.headers['Jwt-Token'])
+    if Auth::Jwt.valid?(jwt: request.headers['Jwt-Token'])
       user = User.find(params[:id])
       render json: user
     else
