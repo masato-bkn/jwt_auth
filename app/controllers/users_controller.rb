@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     render json: user
   rescue JWT::ExpiredSignature
     render status: 403, json: { message: '有効期限切れのトークンです' }
-  rescue StandardError
+  rescue JWT::DecodeError
     render status: 403, json: { message: '認証に失敗しました' }
   end
 
