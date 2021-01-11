@@ -28,9 +28,9 @@ RSpec.describe Auth::Jwt, type: :auth do
     end
   end
 
-  describe 'valid?' do
+  describe 'valify' do
     subject do
-      Auth::Jwt.valid?(jwt: jwt)
+      Auth::Jwt.valify(jwt: jwt)
     end
 
     let :user do
@@ -50,7 +50,7 @@ RSpec.describe Auth::Jwt, type: :auth do
     end
 
     it do
-      expect(subject).to eq(true)
+      expect { subject }.not_to raise_error
     end
 
     context 'jwtの有効期限が切れている場合' do

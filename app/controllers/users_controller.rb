@@ -10,12 +10,14 @@ class UsersController < ApplicationController
   end
 
   def show
-    if Auth::Jwt.valid?(jwt: request.headers['Jwt-Token'])
-      user = User.find(params[:id])
-      render json: user
-    else
-      render status: 403, json: { message: 'unauthorized user' }
-    end
+    Auth::Jwt.valify(jwt: request.headers['Jwt-Token'])
+
+    user = User.find(params[:id])
+    render json: user
+  rescue JWT::ExpiredSignature
+    render status: 403, json: { message: '有効期限切れのトークンです' }
+  rescue StandardError
+    render status: 403, json: { message: '認証に失敗しました' }
   end
 
   private

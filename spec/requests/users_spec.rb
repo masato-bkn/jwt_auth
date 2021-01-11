@@ -69,7 +69,26 @@ RSpec.describe UsersController, type: :request do
       it '想定するレスポンスが返ってくること' do
         result = JSON.parse(subject.body)
 
-        expect(result['message']).to eq('unauthorized user')
+        expect(result['message']).to eq('認証に失敗しました')
+      end
+    end
+
+    context 'トークンの有効期限について' do
+      context '有効期限が切れていた場合' do
+        let :headers do
+          {
+            'Jwt-Token': Auth::Jwt.issue_token(user_info: user_info, expire_time: Time.zone.now)
+          }
+        end
+
+        it '想定するレスポンスが返ってくること' do
+          result = JSON.parse(subject.body)
+
+          expect(result['message']).to eq('有効期限切れのトークンです')
+        end
+      end
+
+      context 'トークンにexpクレームが含まれていない場合' do
       end
     end
   end

@@ -13,12 +13,12 @@ module Auth
       )
     end
 
-    def self.valid?(jwt:)
-      return false if jwt.nil?
+    def self.valify(jwt:)
+      raise if jwt.nil?
 
       decoded_jwt = JWT.decode(jwt, Rails.application.credentials.secret_key_base).first
 
-      user_exists?(decoded_jwt)
+      raise unless user_exists?(decoded_jwt)
     end
 
     def self.user_exists?(decoded_jwt)
