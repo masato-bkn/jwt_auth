@@ -6,14 +6,15 @@ class UsersController < ApplicationController
 
     response.headers['Jwt-Token'] = jwt_token
 
-    render json: @user
+    # render json: @user
+    render :template => "user.json.jb"
   end
 
   def show
     Auth::Jwt.valify(jwt: request.headers['Jwt-Token'])
 
-    user = User.find(params[:id])
-    render json: user
+    @user = User.find(params[:id])
+    render :template => "user.json.jb"
   rescue JWT::ExpiredSignature
     render status: 403, json: { message: '有効期限切れのトークンです' }
   rescue JWT::DecodeError
